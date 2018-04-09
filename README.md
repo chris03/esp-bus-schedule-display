@@ -1,5 +1,7 @@
 # Bus Schedule Display
 
+[![Build Status](https://travis-ci.org/chris03/esp-bus-schedule-display.svg?branch=master)](https://travis-ci.org/chris03/esp-bus-schedule-display)
+
 ## Purpose
 
 Show in realtime the minutes remaining of the upcoming buses  at a given stop using the NextBus API.
