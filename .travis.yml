@@ -10,6 +10,7 @@ install:
 - platformio update
 script:
 - platformio run
+- platformio run -t buildfs
 deploy:
   provider: releases
   on:
@@ -17,7 +18,9 @@ deploy:
     all_branches: true
     tags: true
   skip_cleanup: true
-  file: ".pioenvs/esp12e/firmware.bin"
+  file: 
+  - ".pioenvs/esp12e/spiffs.bin"
+  - ".pioenvs/esp12e/firmware.bin"
   api_key:
     secure: WUnhZgg/TxtxGt0PuE7Qurku1FY8kEj2ZUcvrWlPZbB2LqB4iOvh30FKZ11TFCsRw4+ZpMa4KqiBtz4caOTtvsjAXD9nw0+YmWiDMlswOF2/M8eDiNrOsNA7DAn3DxWvicC3LnLP8dg3xJRNGOz5Ri50OR4E7SBGUvA1UIr1L3vocNeoRBXA5GAK1DQl4b4mFF1XH0GJwz6M8DaQHrEQKIMI9Lgd18G6goP+BW1Nod2mEfPPlFrCydqRRNY/Y5sM7y28lftyrl7l7A5z3eZCAJXShqjBp501jzPaca3/su5llWr0NGiliNXWsUJMuFQuwdpVt+WZeYdgm0PPHYsBFGoI6JzaWfR4Y9bgtmrMWZszselr6xodbhqK2cE/J8F5oWrgpSs49dXQYOM3pjYHLLbaYotUPuu+hc72yceQQaycZ87y2+ikhcy4jm+FqZj4wb23jTBZMJFYd8+UphiUr/hcwVJ40yu94eFhcaX25MplNyRuWLTjy8w3LyWsXRYmj8h52ZaeI5mxPw3fIxvz26QF+Kp/g1mHdpF6s7BQett1miz0l9pLCSt01XUOQI1AYCbLj+r8fhAW8GWAiq4e44h5se/Vz7KAWCsw+VErVkWnSEt1RjUVhMtBc78L3fZ3ltA1j4eaTTuTnzS+qLaTLy02hwHed1Skz+B4sdXSSLE=
 
