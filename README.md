@@ -4,7 +4,8 @@
 
 ## Purpose
 
-Show in realtime the minutes remaining of the upcoming buses  at a given stop using the NextBus API.
+Show in realtime the minutes remaining of the upcoming buses  at a given stop using the NextBus API.  
+Project page: https://hackaday.io/project/116394-bus-schedule-display
 
 ## Hardware
 ESP8266  
