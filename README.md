@@ -42,11 +42,11 @@ See build_flags in platformio.ini for configurable pins.
 
 ## External libraries
 
-https://github.com/tzapu/WiFiManager
-https://github.com/Bodmer/TFT_eSPI
-https://github.com/arduino-libraries/NTPClient.git
-https://github.com/bblanchon/ArduinoJson.git
-https://github.com/Links2004/arduinoWebSockets.git
+https://github.com/tzapu/WiFiManager  
+https://github.com/Bodmer/TFT_eSPI  
+https://github.com/arduino-libraries/NTPClient.git  
+https://github.com/bblanchon/ArduinoJson.git  
+https://github.com/Links2004/arduinoWebSockets.git  
 
 ## External API
 
