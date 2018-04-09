@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html ng-app="BusScheduleDisplay">
+
+<head>
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0, maximum-scale = 1.0, user-scalable=0">
+    <title>ESP8266</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script>
+</head>
+
+<body>
+    <div class="container" ng-controller="ConfigController">
+        <h1 style="margin-bottom: 20px;">Bus Schedule Display</h1>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <button type="button" class="btn btn-default" ng-click="buttonclick('refresh');">Refresh</button>
+                <button type="button" class="btn btn-danger" ng-click="buttonclick('clearWifi');">Clear Wifi Settings</button>
+            </div>
+            <div class="card col-sm-6">
+                <div class="card-body">
+                    <h3 class="card-title">Config</h3>
+                    <form>
+                        <div class="form-group">
+                            <label for="busAgency">Agency</label>
+                            <input id="busAgency" type="text" class="form-control" ng-model="config.busAgency">
+                            <small class="form-text text-muted">Get the bus agency id and bus stop from: http://www.nextbus.com</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="busStop">Bus Stop Id</label>
+                            <input id="busStop" type="number" class="form-control" ng-model="config.busStop">
+                        </div>
+                        <div class="form-group">
+                            <label for="refreshInterval">Refresh Interval (seconds)</label>
+                            <input id="refreshInterval" type="number" class="form-control" ng-model="config.refreshInterval">
+                        </div>
+                        <h4>Filters</h4>
+                        <div class="form-group">
+                            <label>Only Show Bus Within These Minutes</label>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <input type="number" class="form-control" id="showMinutesMin" ng-model="config.showMin">
+                                    <small class="form-text text-muted">Minimum</small>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="number" class="form-control" id="showMinutesMax" ng-model="config.showMax">
+                                    <small class="form-text text-muted">Maximum</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="route">Ignored Bus Lines</label>
+                            <ul>
+                                <li ng-repeat="i in config.ignoredRoutes">{{i}}
+                                    <button class="btn btn-sm btn-danger" title="Remove" ng-click="removeIgnoredRoute(i);" style="padding: 2px; margin-left: 20px; line-height: 10px;">&times;</button>
+                                </li>
+                            </ul>
+                            <div class="input-group col-sm-10">
+                                <input id="route" type="text" placeholder="Bus Line To Ignore" class="form-control" ng-model="route">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" ng-click="ignoreRoute(route)">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-success" type="submit" ng-click="saveConfig()">Save Config</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        angular.module('BusScheduleDisplay', []).controller('ConfigController', ['$scope', '$http', function ($scope, $http) {
+
+            $scope.websock = undefined;
+            $scope.config = undefined;
+
+            $scope.loadConfig = function () {
+                $http({ url: '/config' }).then(function (result) {
+                    $scope.config = result.data || {};
+                });
+            };
+
+            $scope.start = function () {
+                $scope.websock = new WebSocket('ws://' + window.location.hostname + ':81/');
+
+                $scope.websock.onopen = function (evt) {
+                    console.log('websock open');
+                };
+                $scope.websock.onclose = function (evt) {
+                    console.log('websock close');
+                };
+                $scope.websock.onerror = function (evt) {
+                    console.log(evt);
+                };
+                $scope.websock.onmessage = function (evt) {
+                    console.log(evt);
+                    console.log(evt.data);
+                };
+            };
+            $scope.buttonclick = function (action) {
+                $scope.websock.send(action);
+            };
+
+            $scope.saveConfig = function () {
+                $scope.websock.send('json:' + angular.toJson($scope.config));
+            };
+
+            $scope.ignoreRoute = function (val) {
+                if (!val || val.trim() == '') {
+                    return;
+                }
+
+                if (!$scope.config) {
+                    $scope.config = {};
+                }
+                if (!$scope.config.ignoredRoutes) {
+                    $scope.config.ignoredRoutes = [];
+                }
+                const i = $scope.config.ignoredRoutes.indexOf(val);
+                if (i < 0) {
+                    $scope.config.ignoredRoutes.push(val);
+                }
+                $scope.route = '';
+            };
+
+            $scope.removeIgnoredRoute = function (val) {
+                if ($scope.config && $scope.config.ignoredRoutes) {
+                    const i = $scope.config.ignoredRoutes.indexOf(val);
+                    if (i >= 0) {
+                        $scope.config.ignoredRoutes.splice(i, 1);
+                    }
+                }
+            };
+
+            try {
+                $scope.start();
+                $scope.loadConfig();
+            } catch (e) {
+                console.log(e);
+            }
+        }]);
+    </script>
+</body>
+
+</html>

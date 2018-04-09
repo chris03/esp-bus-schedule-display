@@ -28,9 +28,23 @@ CS   (SD card) <=>
 MOSI (SD card) <=> 
 MISO (SD card) <=>
 SCK  (SD card) <=>
-CS             <=> CS   GPIO15 (configurable, see code)
+CS             <=> CS   GPIO15 (configurable)
 SCL            <=> CLK  GPIO14
 SDA            <=> MOSI GPIO13
 A0             <=> DC   GPIO4  (configurable)
 RESET          <=>      GPIO5  (configurable)
+
+See build_flags in platformio.ini for configurable pins.
 ``` 
+
+## External libraries
+
+https://github.com/tzapu/WiFiManager
+https://github.com/Bodmer/TFT_eSPI
+https://github.com/arduino-libraries/NTPClient.git
+https://github.com/bblanchon/ArduinoJson.git
+https://github.com/Links2004/arduinoWebSockets.git
+
+## External API
+
+https://www.nextbus.com/xmlFeedDocs/NextBusXMLFeed.pdf
