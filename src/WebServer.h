@@ -31,9 +31,6 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t *payload, size_t length)
     case WStype_TEXT:
         Serial.printf("[%u] get Text: %s\r\n", num, payload);
 
-        int len;
-        char buff[100];
-
         if (strcmp("refresh", (const char *)payload) == 0)
         {
             nextDraw = 1;
