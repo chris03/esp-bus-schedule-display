@@ -8,8 +8,13 @@ Chris03::BusPredictions busPredictions(busConfig);
 #include "Display.h"
 Chris03::Display display;
 
+const char PIN_BACKLIGHT_POWER = 16;
+const char PIN_BTN1 = 0;
+const char PIN_BTN2 = 2;
+
 unsigned long nextDraw = 0;
 unsigned long nextTimeDraw = 0;
+unsigned long nextBacklightOff = 0;
 
 #include "NetworkTime.h"
 #include "wifi.h"
@@ -69,6 +74,16 @@ void setup()
   busPredictions.setOnUpdateCallback(drawBusPredictions);
 
   Serial.begin(115200);
+
+  // Enable display
+  pinMode(PIN_BACKLIGHT_POWER, OUTPUT);
+  digitalWrite(PIN_BACKLIGHT_POWER, HIGH);
+
+  pinMode(PIN_BTN1, INPUT_PULLUP);
+  pinMode(PIN_BTN2, INPUT_PULLUP);
+
+  nextBacklightOff = millis() + 60000;
+
   display.init(1 /* Rotatation */);
   display.printCenter("Bus Schedule Display", 2);
   setupWifi();
@@ -77,6 +92,26 @@ void setup()
 void loop()
 {
   unsigned long now = millis();
+
+  if (digitalRead(PIN_BTN2) == LOW)
+  {
+    Serial.println("Button on GPIO2 pressed");
+
+    // Power on backlight for 30 sec.
+    digitalWrite(PIN_BACKLIGHT_POWER, HIGH);
+    nextBacklightOff = millis() + 30000;
+  }
+
+  if (digitalRead(PIN_BTN1) == LOW)
+  {
+    Serial.println("Button on GPIO0 pressed");
+  }
+
+  if (nextBacklightOff < now)
+  {
+    // Power down backlight
+    digitalWrite(PIN_BACKLIGHT_POWER, LOW);
+  }
 
   // First run
   if (nextDraw == 0)

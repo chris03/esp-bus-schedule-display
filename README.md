@@ -10,6 +10,8 @@ Project page: https://hackaday.io/project/116394-bus-schedule-display
 ## Hardware
 ESP8266  
 ST7735S 1.8 Inch SPI TFT Display 
+Push button (Optional)
+Transistor (Optional)
 
 ## Features
 
@@ -38,7 +40,17 @@ A0             <=> DC   GPIO4  (configurable)
 RESET          <=>      GPIO5  (configurable)
 
 See build_flags in platformio.ini for configurable pins.
+
+Optional to turn the lcd backlight on/off    
+-----------------------------------------
+Push button    <=>      GPIO2
+Transistor     <=>      GPIO16
 ``` 
+
+## Installation
+
+Use https://platformio.org/ to build and depoy the code.
+
 
 ## External libraries
 
