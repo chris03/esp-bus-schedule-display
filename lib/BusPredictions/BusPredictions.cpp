@@ -71,7 +71,7 @@ void BusPredictions::parseJson(WiFiClient &wifiClient)
     // Clear previous values
     busPredictions_.clear();
 
-    for (int i = 0; i < jsonPredictionArray.size(); ++i)
+    for (uint i = 0; i < jsonPredictionArray.size(); ++i)
     {
         JsonObject &jsonPrediction = jsonPredictionArray[i];
         const char *routeTitle = jsonPrediction["routeTitle"];
@@ -84,7 +84,7 @@ void BusPredictions::parseJson(WiFiClient &wifiClient)
 
         if (jsonDirectionPredictionsArray.success())
         {
-            for (int j = 0; j < jsonDirectionPredictionsArray.size(); ++j)
+            for (uint j = 0; j < jsonDirectionPredictionsArray.size(); ++j)
             {
                 const char *minutes = jsonDirectionPredictionsArray[j]["minutes"];
                 Serial.printf("  %s min.  ", minutes);

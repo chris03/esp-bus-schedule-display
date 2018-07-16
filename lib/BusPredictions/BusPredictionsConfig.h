@@ -26,7 +26,7 @@ struct BusPredictionsConfig
             JsonArray &ignoredRoutesArray = root["ignoredRoutes"];
 
             ignoredRoutes.clear();
-            for (int i = 0; i < ignoredRoutesArray.size(); ++i)
+            for (uint i = 0; i < ignoredRoutesArray.size(); ++i)
             {
                 ignoredRoutes.push_back(ignoredRoutesArray[i]);
             }
